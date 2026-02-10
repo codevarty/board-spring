@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codevarty.board.domain.board.mapper.BoardMapper">
+	<!-- 게시글 목록 조회 -->
+	<select id="getBoardList" resultType="com.codevarty.board.domain.board.dto.response.BoardResponseDto">
+		SELECT 
+		    b.board_id, 	/*게시글 일련번호*/
+		    b.user_seq, 	/* 사용자 일련번호 */
+		    u.user_name, /* 사용자명 */
+		    b.title, 		/* 제목 */
+		    b.view_count, /* 게시글 조회수*/
+		    b.created_at, /* 등록일자 */
+		    b.updated_at 	/* 수저일자 */
+		FROM tboard b
+		INNER JOIN tuser u
+		ON b.user_seq = u.user_seq
+		<where>
+			<if test="startDate != null and startDate != ''">
+				<![CDATA[ AND b.created_at >= to_date(#{startDate} , 'YYYY-MM-DD') ]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				<![CDATA[ AND b.created_at <= to_date(#{endDate} , 'YYYY-MM-DD') + 1 ]]>
+			</if>
+		</where>
+		ORDER BY created_at DESC
+		OFFSET (#{page} - 1) * #{pageSize} LIMIT #{pageSize}
+	</select>
+	<!-- 게시글 총 개수 조회 -->
+	<select id="getBoardTotalCount" resultType="int">
+		SELECT 
+			count(b.board_id)
+		FROM tboard b
+		INNER JOIN tuser u
+		ON b.user_seq = u.user_seq
+		<where>
+			<if test="startDate != null and startDate != ''">
+				<![CDATA[ AND b.created_at >= to_date(#{startDate} , 'YYYY-MM-DD') ]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				<![CDATA[ AND b.created_at <= to_date(#{endDate} , 'YYYY-MM-DD') + 1 ]]>
+			</if>
+		</where>
+	</select>
+	<!-- 게시글 상세 조회 -->
+	<select id="getBoardDetail" resultType="com.codevarty.board.domain.board.dto.response.BoardDetailResponseDto">
+		SELECT
+		    b.board_id, 	/*게시글 일련번호*/
+		    u.user_name, 	/* 사용자명 */
+		    b.title, 		/* 제목 */
+		    b.content,		/* 내용 */
+		    b.view_count, /* 게시글 조회수*/
+		    b.created_at, /* 등록일자 */
+		    b.updated_at 	/* 수저일자 */
+		FROM tboard b
+		INNER JOIN tuser u
+		ON b.user_seq = u.user_seq
+		WHERE b.board_id = #{boardId}
+	</select>
+	<!-- 게시글 등록 -->
+	<insert id="saveBoard" parameterType="com.codevarty.board.domain.board.dto.request.BoardSaveRequestDto" 
+        useGeneratedKeys="true" keyProperty="boardId" keyColumn="board_id">
+    	
+		INSERT INTO tboard(title, content, user_seq)
+		VALUES (#{title}, #{content}, #{userSeq})
+	</insert>
+	<!-- 게시글 수정 -->
+	<update id="updateBoard">
+		UPDATE tboard
+		SET title = #{title},
+			content = #{content},
+			updated_at = now()
+		WHERE board_id = #{boardId}
+	</update>
+	<!-- 조회수 수정 -->
+	<update id="updateBoardViewCount">
+		UPDATE tboard
+		SET view_count = view_count + 1,
+			updated_at = now()
+		WHERE board_id = #{boardId}
+	</update>
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoard">
+		DELETE FROM tboard
+		WHERE board_id = #{boardId}
+	</delete>
+</mapper>
