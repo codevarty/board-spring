@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codevarty.board.domain.comment.mapper.CommentMapper">
+	<!-- 댓글 목록 조회 -->
+	<select id="getCommentList" resultType="com.codevarty.board.domain.comment.dto.response.CommentResponseDto">
+		SELECT
+		        c.comment_id,   /* 게시글 id */
+		        c.content,      /* 내용 */
+		        c.user_seq,     /* 사용자id */
+		        u.user_name,    /* 사용자명 */
+		        c.created_at,   /* 작성일 */
+		        c.updated_at    /* 수정일 */
+		FROM tcomment c
+		INNER JOIN tuser u
+		ON c.user_seq = u.user_seq
+		WHERE c.board_id = #{boardId}
+		ORDER BY created_at DESC
+	</select>
+	<!-- 게시글 등록 -->
+	<insert id="saveComment">
+		INSERT INTO tcomment(content, board_id, user_seq)
+		VALUES (#{content}, #{boardId}, #{userSeq})
+	</insert>
+	<!-- 게시글 수정 -->
+	<update id="updateComment">
+		UPDATE tcomment
+		SET content = #{content},
+			updated_at = now()
+		WHERE comment_id = #{commentId}
+	</update>
+	<!-- 게시글 삭제 -->
+	<delete id="deleteComment">
+		DELETE FROM tcomment
+		WHERE comment_id = #{commentId}
+	</delete>
+</mapper>
