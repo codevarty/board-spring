@@ -23,7 +23,7 @@
 			</if>
 		</where>
 		ORDER BY created_at DESC
-		OFFSET (#{page} - 1) * #{pageSize} LIMIT #{pageSize}
+		LIMIT #{pageSize} OFFSET #{offset} 
 	</select>
 	<!-- 게시글 총 개수 조회 -->
 	<select id="getBoardTotalCount" resultType="int">
