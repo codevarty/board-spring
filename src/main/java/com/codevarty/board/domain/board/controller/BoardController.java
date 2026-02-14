@@ -43,7 +43,7 @@ public class BoardController {
 	@PutMapping("/update/{boardId}")
 	public Long updateBoard(
 			@PathVariable(name = "boardId") Long boardId,
-			BoardUpdateRequestDto requestDto) {
+			@RequestBody BoardUpdateRequestDto requestDto) {
 		return boardService.updateBoard(boardId, requestDto);
 	}
 	

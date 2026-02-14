@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.codevarty.board.domain.comment.dto.request.CommentSaveRequestDto;
+import com.codevarty.board.domain.comment.dto.request.CommentSearchRequestDto;
 import com.codevarty.board.domain.comment.dto.request.CommentUpdateRequestDto;
 import com.codevarty.board.domain.comment.dto.response.CommentResponseDto;
 
@@ -18,7 +19,15 @@ public interface CommentMapper {
 	 * @param boardId 게시글 id
 	 * @return 게시글 목록 dtoList
 	 */
-	List<CommentResponseDto> getCommentList(Long boardId);
+	List<CommentResponseDto> getCommentList(CommentSearchRequestDto requestDto);
+	
+	/**
+	 * 게시글의 댓글 총 개수를 조회한다.
+	 * 
+	 * @param boardId 게시글 id
+	 * @return 게시글 총 개수
+	 */
+	int getTotalCount(CommentSearchRequestDto requestDto);
 	
 	/**
 	 * 게시글의 댓글을 저장한다.
