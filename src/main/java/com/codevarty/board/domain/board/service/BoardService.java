@@ -11,7 +11,7 @@ import com.codevarty.board.domain.board.dto.request.BoardUpdateRequestDto;
 import com.codevarty.board.domain.board.dto.response.BoardDetailResponseDto;
 import com.codevarty.board.domain.board.dto.response.BoardResponseDto;
 import com.codevarty.board.domain.board.mapper.BoardMapper;
-import com.codevarty.board.domain.common.page.PageResponse;
+import com.codevarty.board.global.page.PageResponse;
 
 import lombok.RequiredArgsConstructor;
 

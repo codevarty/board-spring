@@ -10,7 +10,7 @@ import com.codevarty.board.domain.comment.dto.request.CommentSearchRequestDto;
 import com.codevarty.board.domain.comment.dto.request.CommentUpdateRequestDto;
 import com.codevarty.board.domain.comment.dto.response.CommentResponseDto;
 import com.codevarty.board.domain.comment.mapper.CommentMapper;
-import com.codevarty.board.domain.common.page.PageResponse;
+import com.codevarty.board.global.page.PageResponse;
 
 import lombok.RequiredArgsConstructor;
 

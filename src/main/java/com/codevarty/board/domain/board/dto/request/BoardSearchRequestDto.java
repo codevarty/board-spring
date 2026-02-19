@@ -1,6 +1,6 @@
 package com.codevarty.board.domain.board.dto.request;
 
-import com.codevarty.board.domain.common.page.PageRequest;
+import com.codevarty.board.global.page.PageRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

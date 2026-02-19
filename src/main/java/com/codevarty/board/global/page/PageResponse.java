@@ -1,4 +1,4 @@
-package com.codevarty.board.domain.common.page;
+package com.codevarty.board.global.page;
 
 import java.util.Collections;
 import java.util.List;

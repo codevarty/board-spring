@@ -15,8 +15,9 @@ import com.codevarty.board.domain.board.dto.request.BoardUpdateRequestDto;
 import com.codevarty.board.domain.board.dto.response.BoardDetailResponseDto;
 import com.codevarty.board.domain.board.dto.response.BoardResponseDto;
 import com.codevarty.board.domain.board.service.BoardService;
-import com.codevarty.board.domain.common.page.PageResponse;
+import com.codevarty.board.global.page.PageResponse;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -36,14 +37,14 @@ public class BoardController {
 	}
 	
 	@PostMapping("/save")
-	public Long saveBoard(@RequestBody BoardSaveRequestDto requestDto) {
+	public Long saveBoard(@RequestBody @Valid BoardSaveRequestDto requestDto) {
 		return boardService.saveBoard(requestDto);
 	}
 	
 	@PutMapping("/update/{boardId}")
 	public Long updateBoard(
 			@PathVariable(name = "boardId") Long boardId,
-			@RequestBody BoardUpdateRequestDto requestDto) {
+			@RequestBody @Valid BoardUpdateRequestDto requestDto) {
 		return boardService.updateBoard(boardId, requestDto);
 	}
 	

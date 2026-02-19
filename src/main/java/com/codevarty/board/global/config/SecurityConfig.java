@@ -1,4 +1,4 @@
-package com.codevarty.board.global;
+package com.codevarty.board.global.config;
 
 import java.util.Arrays;
 
