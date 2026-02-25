@@ -44,7 +44,7 @@ public interface CommentMapper {
 	 */
 	void updateComment(
 			@Param("commentId") Long commentId, 
-			@Param("requestDto")CommentUpdateRequestDto requestDto);
+			@Param("requestDto") CommentUpdateRequestDto requestDto);
 	
 	/**
 	 * 댓글을 삭제한다.

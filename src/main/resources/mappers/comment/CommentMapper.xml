@@ -34,7 +34,7 @@
 	<!-- 게시글 수정 -->
 	<update id="updateComment">
 		UPDATE tcomment
-		SET content = #{content},
+		SET content = #{requestDto.content},
 			updated_at = now()
 		WHERE comment_id = #{commentId}
 	</update>
