@@ -16,6 +16,7 @@ import com.codevarty.board.domain.comment.dto.response.CommentResponseDto;
 import com.codevarty.board.domain.comment.service.CommentService;
 import com.codevarty.board.global.page.PageResponse;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
@@ -32,14 +33,14 @@ public class CommentController {
 	}
 	
 	@PostMapping("/save")
-	public void saveComment(@RequestBody CommentSaveRequestDto requestDto) {
+	public void saveComment(@RequestBody @Valid CommentSaveRequestDto requestDto) {
 		commentService.saveComment(requestDto);
 	}
 	
 	@PutMapping("/update/{commentId}")
 	public void updateComment(
 			@PathVariable(name = "commentId") Long commentId,
-			@RequestBody CommentUpdateRequestDto requestDto) {
+			@RequestBody @Valid CommentUpdateRequestDto requestDto) {
 		commentService.updateComment(commentId, requestDto);
 	}
 	
