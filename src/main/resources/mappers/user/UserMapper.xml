@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mappers.user.UserMapper">
-	<!-- 사용자 목록 조회 -->
-	<select id="getUserList">
-		SELECT
-			user_seq,
-			user_id,
-			user_name,
-			created_at
-		FROM tuser
-	</select>
+<mapper namespace="com.codevarty.board.domain.user.mapper.UserMapper">
 	<!-- 아이디로 사용자 정보 조회 -->
-	<select id="getUserByUserId">
+	<select id="getUserByUserId" resultType="com.codevarty.board.domain.user.dto.response.UserResponse">
 		SELECT
 			user_seq,
 			user_id,
-			user_name,
-			password,
+			user_name as username,
 			email,
 			user_tel,
 			created_at
 		FROM tuser
 		where user_id = #{userId}
+	</select>
+	<!-- 이메일로 사용자 정보 조회 -->
+	<select id="getUserByEmail" resultType="com.codevarty.board.domain.user.dto.response.UserResponse">
+		SELECT
+			user_seq,
+			user_id,
+			user_name as username,
+			email,
+			user_tel,
+			created_at
+		FROM tuser
+		where email = #{email}
 	</select>
 	<!-- 일련번호로 사용자 정보 조회 -->
 	<select id="getUserByUserSeq">
