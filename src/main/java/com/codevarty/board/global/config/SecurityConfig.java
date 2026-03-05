@@ -33,6 +33,9 @@ public class SecurityConfig {
         configuration.addAllowedHeader("*");
         // 자격 증명 허용 (Cookie, 인증 헤더 등 사용 시 필수)
         configuration.setAllowCredentials(true);
+        
+        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("Authorization-refresh");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
