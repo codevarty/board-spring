@@ -2,7 +2,6 @@ package com.codevarty.board.domain.user.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.codevarty.board.domain.user.dto.response.UserResponse;
 import com.codevarty.board.domain.user.entity.UserEntity;
 
 @Mapper
@@ -21,7 +20,7 @@ public interface UserMapper {
 	 * @param userId 사용자 id
 	 * @return 사용자 정보 dto
 	 */
-	UserResponse getUserByUserId(String userId);
+	UserEntity getUserByUserId(String userId);
 	
 	/**
 	 * 사용자 email을 통해 사용자 정보를 조회한다.
@@ -29,5 +28,5 @@ public interface UserMapper {
 	 * @param email 사용자 email
 	 * @return 사용자 정보 dto
 	 */
-	UserResponse getUserByEmail(String email);
+	UserEntity getUserByEmail(String email);
 }

@@ -42,9 +42,5 @@ public class UserService {
 		// 사용자 등록
 		userMapper.saveUser(user);
 	}
-	
-	public UserResponse getUserByuserId(String UserId) {
-		return userMapper.getUserByUserId(UserId);
-	}
 
 }
