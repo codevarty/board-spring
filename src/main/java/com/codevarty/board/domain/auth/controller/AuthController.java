@@ -25,6 +25,8 @@ public class AuthController {
 		TokenResponseDto tokenDto = authService.login(requestDto);
 		HttpHeaders headers = new HttpHeaders();
 		
+		// 추가로 memory에 token정보를 가지고 있도록 처리를 해야 함.
+		
 		// header에 토큰을 담아서 처리
 		headers.set("Authorization", "Bearer " + tokenDto.getAccessToken());
 		headers.set("Authorization-refresh", "Bearer " + tokenDto.getRefreshToken());

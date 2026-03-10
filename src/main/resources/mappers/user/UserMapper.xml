@@ -10,6 +10,7 @@
 			password,
 			email,
 			user_tel,
+			refresh_token,
 			created_at
 		FROM tuser
 		where user_id = #{userId}
@@ -23,6 +24,7 @@
 			password,
 			email,
 			user_tel,
+			refresh_token,
 			created_at
 		FROM tuser
 		where email = #{email}
@@ -36,6 +38,7 @@
 			password,
 			email,
 			user_tel,
+			refresh_token,
 			created_at
 		FROM tuser
 		where user_seq = #{userSeq}
@@ -48,8 +51,25 @@
 	<!-- 사용자정보 변경 -->
 	<update id="updateUserInfo">
 		UPDATE tuser
-		WHERE user_id = #{user_id}
+		SET user_name = #{username},
+			password = #{password},
+			user_tel = #{userTel}
+		WHERE user_seq = #{user_seq}
 	</update>
+	
+	<!-- refresh 토큰 변경 -->
+	<update id="updateRefreshToken">
+		update tuser
+		set refresh_token = #{refreshToken}
+		where user_seq = #{userSeq}
+	</update>
+	
+	<update id="removeRefreshToken">
+		update tuser
+		set refresh_token = null
+		where user_seq = #{userSeq}
+	</update>
+	
 	<!-- 사용자 삭제 -->
 	<delete id="deleteUser">
 		DELETE FROM tuser

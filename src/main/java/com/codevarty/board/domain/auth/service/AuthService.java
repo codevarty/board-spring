@@ -37,8 +37,9 @@ public class AuthService {
 		// 토큰 생성
 		String accessToken = jwtProvider.generateToken(findUser.getUserId(), "", false);
 		String refreshToken = jwtProvider.generateToken(findUser.getUserId(), "", true);
-		
-		// TODO: DB에 refresh token을 저장할 수 있도록 추가 필요.
+
+		// 리프레쉬 토큰 수정
+		userMapper.updateRefreshToken(findUser.getUserSeq(), refreshToken);
 		
 		return new TokenResponseDto(accessToken, refreshToken);
 	}
