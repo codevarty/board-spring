@@ -35,12 +35,18 @@ public class AuthService {
 		}
 		
 		// 토큰 생성
-		String accessToken = jwtProvider.generateToken(findUser.getUserId(), "", false);
-		String refreshToken = jwtProvider.generateToken(findUser.getUserId(), "", true);
+		String accessToken = jwtProvider.generateToken(findUser.getUserSeq(), "", false);
+		String refreshToken = jwtProvider.generateToken(findUser.getUserSeq(), "", true);
 
 		// 리프레쉬 토큰 수정
 		userMapper.updateRefreshToken(findUser.getUserSeq(), refreshToken);
 		
 		return new TokenResponseDto(accessToken, refreshToken);
+	}
+	
+	public void logout(Long userSeq) {
+		
+		// refresh token 제거
+		userMapper.updateRefreshToken(userSeq, null);
 	}
 }

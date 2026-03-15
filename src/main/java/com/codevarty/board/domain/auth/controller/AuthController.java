@@ -1,7 +1,11 @@
 package com.codevarty.board.domain.auth.controller;
 
+import java.net.http.HttpRequest;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +29,6 @@ public class AuthController {
 		TokenResponseDto tokenDto = authService.login(requestDto);
 		HttpHeaders headers = new HttpHeaders();
 		
-		// 추가로 memory에 token정보를 가지고 있도록 처리를 해야 함.
-		
 		// header에 토큰을 담아서 처리
 		headers.set("Authorization", "Bearer " + tokenDto.getAccessToken());
 		headers.set("Authorization-refresh", "Bearer " + tokenDto.getRefreshToken());
@@ -34,6 +36,19 @@ public class AuthController {
 		return ResponseEntity.ok()
 				.headers(headers)
 				.body("success");
+	}
+	
+	@GetMapping("/logout")
+	public ResponseEntity<String> logout(HttpRequest request) {
+		
+		// 인증 처리 부분 이후 확인
+		Long userSeq = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		authService.logout(userSeq);
+		
+		SecurityContextHolder.clearContext();
+		
+		return ResponseEntity.ok("success");
 	}
 
 }

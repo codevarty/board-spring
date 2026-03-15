@@ -6,15 +6,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.codevarty.board.global.filter.auth.JwtAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
@@ -47,9 +55,14 @@ public class SecurityConfig {
         http
         	.cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable()) // CSRF 비활성화
+            .sessionManagement(session -> 
+            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // session 미사용
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // 테스트를 위해 모든 경로 접근 허용
-            );
+            	.requestMatchers("/auth/**", "/user/sign-up", "/board/list", "/comment/list").permitAll()
+                .anyRequest().authenticated() // 인증 필요
+            )
+            // filter, beforeFilter
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
     }

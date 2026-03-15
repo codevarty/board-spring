@@ -46,12 +46,12 @@ public class JwtProvider {
 	 * @param isAccessToken accessToken 여부
 	 * @return 생성된 토큰
 	 */
-	public String generateToken(String userId, String role, boolean isAccessToken) {
+	public String generateToken(Long userSeq, String role, boolean isAccessToken) {
 		long expireTime = isAccessToken ? accessTokenExpiration : refreshTokenExpiration;
 		Date now = new Date();
         Date validity = new Date(now.getTime() + expireTime);
         
-        Claims claims = Jwts.claims().setSubject(userId);
+        Claims claims = Jwts.claims().setSubject(userSeq.toString());
         claims.put("role", role);
 		
 		return Jwts.builder()
@@ -68,13 +68,13 @@ public class JwtProvider {
 	 * @param token 토큰
 	 * @return 사용자 id
 	 */
-	public String getUserIdByToken(String token) {
-		return Jwts.parserBuilder()
+	public Long getUserSeqByToken(String token) {
+		return Long.valueOf(Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .getSubject());
 	}
 	
 	/**

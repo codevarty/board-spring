@@ -63,12 +63,7 @@
 		set refresh_token = #{refreshToken}
 		where user_seq = #{userSeq}
 	</update>
-	
-	<update id="removeRefreshToken">
-		update tuser
-		set refresh_token = null
-		where user_seq = #{userSeq}
-	</update>
+
 	
 	<!-- 사용자 삭제 -->
 	<delete id="deleteUser">
