@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codevarty.board.domain.auth.dto.request.LoginRequestDto;
+import com.codevarty.board.domain.auth.dto.response.LoginResponseDto;
 import com.codevarty.board.domain.auth.dto.response.TokenResponseDto;
 import com.codevarty.board.domain.auth.service.AuthService;
 
@@ -25,17 +26,19 @@ public class AuthController {
 	private final AuthService authService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody @Valid LoginRequestDto requestDto) {
-		TokenResponseDto tokenDto = authService.login(requestDto);
+	public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto requestDto) {
+		LoginResponseDto response = authService.login(requestDto);
 		HttpHeaders headers = new HttpHeaders();
 		
 		// header에 토큰을 담아서 처리
-		headers.set("Authorization", "Bearer " + tokenDto.getAccessToken());
-		headers.set("Authorization-refresh", "Bearer " + tokenDto.getRefreshToken());
+		// 나중에 리펙토링 필요 이유: AuthController에서 token에 대한 정보를 알고 있어야 함.
+		// 결합도 문제가 있음.
+		headers.set("Authorization", "Bearer " + response.getToken().getAccessToken());
+		headers.set("Authorization-refresh", "Bearer " + response.getToken().getRefreshToken());
 		
 		return ResponseEntity.ok()
 				.headers(headers)
-				.body("success");
+				.body(response);
 	}
 	
 	@GetMapping("/logout")

@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codevarty.board.domain.auth.dto.request.LoginRequestDto;
+import com.codevarty.board.domain.auth.dto.response.LoginResponseDto;
 import com.codevarty.board.domain.auth.dto.response.TokenResponseDto;
+import com.codevarty.board.domain.user.dto.response.UserResponse;
 import com.codevarty.board.domain.user.entity.UserEntity;
 import com.codevarty.board.domain.user.mapper.UserMapper;
 import com.codevarty.board.global.token.JwtProvider;
@@ -20,7 +22,7 @@ public class AuthService {
 	private final JwtProvider jwtProvider;
 	
 	@Transactional
-	public TokenResponseDto login(LoginRequestDto requestDto) {
+	public LoginResponseDto login(LoginRequestDto requestDto) {
 		
 		UserEntity findUser = userMapper.getUserByUserId(requestDto.getUserId());
 		
@@ -41,7 +43,25 @@ public class AuthService {
 		// 리프레쉬 토큰 수정
 		userMapper.updateRefreshToken(findUser.getUserSeq(), refreshToken);
 		
-		return new TokenResponseDto(accessToken, refreshToken);
+		// 토큰 response
+		TokenResponseDto token = TokenResponseDto.builder()
+									.accessToken(accessToken)
+									.refreshToken(refreshToken)
+									.build();
+		
+		// 사용자 정보
+		UserResponse user = UserResponse.builder()
+								.userSeq(findUser.getUserSeq())
+								.userId(findUser.getUserId())
+								.email(findUser.getEmail())
+								.username(findUser.getUsername())
+								.userTel(findUser.getUserTel())
+								.build();
+		
+		return LoginResponseDto.builder()
+							.token(token)
+							.userInfo(user)
+							.build();
 	}
 	
 	public void logout(Long userSeq) {
